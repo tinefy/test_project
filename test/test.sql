@@ -1,21 +1,33 @@
-Query
-SELECT `tb_address`.`id`,
-       `tb_address`.`create_time`,
-       `tb_address`.`update_time`,
-       `tb_address`.`user_id`,
-       `tb_address`.`title`,
-       `tb_address`.`receiver`,
-       `tb_address`.`province_id`,
-       `tb_address`.`city_id`,
-       `tb_address`.`district_id`,
-       `tb_address`.`place`,
-       `tb_address`.`mobile`,
-       `tb_address`.`tel`,
-       `tb_address`.`email`,
-       `tb_address`.`is_deleted`
-FROM `tb_address`
-WHERE (NOT `tb_address`.`is_deleted` AND `tb_address`.`user_id` = 21)
-ORDER BY `tb_address`.`update_time` DESC LIMIT 21
-
-
-INSERT INTO `tb_address` (`create_time`, `update_time`, `user_id`, `title`, `receiver`, `province_id`, `city_id`, `district_id`, `place`, `mobile`, `tel`, `email`, `is_deleted`) VALUES ('2022-08-13 17:43:03.915329', '2022-08-13 17:43:03.915352', 21, 'abc', 'abc', 110000, 110100, 110101, 'dafs', '13816783387', '', '', 0)
+| app1_person |
+CREATE TABLE `app1_person`
+(
+    `id`   bigint      NOT NULL AUTO_INCREMENT,
+    `name` varchar(50) NOT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb3
+| app1_group |
+CREATE TABLE `app1_group`
+(
+    `id`   bigint       NOT NULL AUTO_INCREMENT,
+    `name` varchar(128) NOT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb3
+| app1_membership |
+CREATE TABLE `app1_membership`
+(
+    `id`            bigint      NOT NULL AUTO_INCREMENT,
+    `invite_reason` varchar(64) NOT NULL,
+    `group_id`      bigint      NOT NULL,
+    `inviter_id`    bigint      NOT NULL,
+    `person_id`     bigint      NOT NULL,
+    PRIMARY KEY (`id`),
+    KEY `app1_membership_inviter_id_522204d8_fk_app1_person_id` (`inviter_id`),
+    KEY `app1_membership_person_id_d270a4b1_fk_app1_person_id` (`person_id`),
+    KEY `app1_membership_group_id_c995da4c_fk_app1_group_id` (`group_id`),
+    CONSTRAINT `app1_membership_group_id_c995da4c_fk_app1_group_id` FOREIGN KEY (`group_id`) REFERENCES `app1_group` (`id`),
+    CONSTRAINT `app1_membership_inviter_id_522204d8_fk_app1_person_id` FOREIGN KEY (`inviter_id`) REFERENCES `app1_person` (`id`),
+    CONSTRAINT `app1_membership_person_id_d270a4b1_fk_app1_person_id` FOREIGN KEY (`person_id`) REFERENCES `app1_person` (`id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb3 |
